@@ -19,6 +19,6 @@ const mapStateToProps = state => ({
   alerts: state.alert,
 });
 
-const mapDispatchToProps = {};
+//const mapDispatchToProps = {};
 
 export default connect(mapStateToProps)(Alert);
