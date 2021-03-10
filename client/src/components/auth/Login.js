@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -25,7 +25,7 @@ const Login = ({ login, isAuthenticated }) => {
     return <Redirect to="/dashboard" />;
   }
   return (
-    <>
+    <Fragment>
       <div class="alert alert-danger">Invalid credentials</div>
       <h1 class="large text-primary">Sign In</h1>
       <p class="lead">
@@ -57,7 +57,7 @@ const Login = ({ login, isAuthenticated }) => {
       <p class="my-1">
         Don't have an account? <Link to="/register">Sign Up</Link>
       </p>
-    </>
+    </Fragment>
   );
 };
 
