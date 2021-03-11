@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+//testing
 const PostSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
