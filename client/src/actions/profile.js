@@ -14,8 +14,11 @@ import {
 export const getCurrentProfile = () => async dispatch => {
   try {
     const res = await axios.get("/api/profile/me");
+    console.log(res);
     dispatch({ type: GET_PROFILE, payload: res.data });
   } catch (err) {
+    console.log(err);
+    //dispatch({ type: CLEAR_PROFILE });
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
@@ -27,8 +30,10 @@ export const getProfiles = () => async dispatch => {
   dispatch({ type: CLEAR_PROFILE });
   try {
     const res = await axios.get("/api/profile");
+
     dispatch({ type: GET_PROFILES, payload: res.data });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
@@ -39,20 +44,28 @@ export const getProfiles = () => async dispatch => {
 export const getProfileById = userId => async dispatch => {
   try {
     const res = await axios.get(`/api/profile/user/${userId}`);
-    dispatch({ type: GET_PROFILE, payload: res.data });
+    console.log(res);
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
+
 //Get github repos
 export const getGithubRepos = username => async dispatch => {
   try {
     const res = await axios.get(`/api/profile/github/${username}`);
+    console.log(res);
     dispatch({ type: GET_REPOS, payload: res.data });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
@@ -66,7 +79,7 @@ export const createProfile = (
   edit = false
 ) => async dispatch => {
   try {
-    const res = await axios.post("/profile", formData);
+    const res = await axios.post("/api/profile", formData);
 
     dispatch({
       type: GET_PROFILE,
@@ -79,6 +92,7 @@ export const createProfile = (
       history.push("/dashboard");
     }
   } catch (err) {
+    console.log(err);
     const errors = err.response.data.errors;
 
     if (errors) {
@@ -103,12 +117,13 @@ export const addExperience = (formData, history) => async dispatch => {
 
     const res = await axios.put("/api/profile/experience", formData, config);
     dispatch({ type: UPDATE_PROFILE, payload: res.data });
-    dispatch(setAlert("Experience Added", "Success"));
+    dispatch(setAlert("Experience Added", "success"));
     history.push("/dashboard");
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
+      console.log(err);
       errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     }
     dispatch({
@@ -149,7 +164,7 @@ export const deleteExpereince = id => async dispatch => {
   try {
     const res = await axios.delete(`/api/profile/experience/${id}`);
     dispatch({ type: UPDATE_PROFILE, payload: res.data });
-    dispatch(setAlert("Expereince Removed", "Success"));
+    dispatch(setAlert("Expereince Removed", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 

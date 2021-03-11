@@ -14,6 +14,10 @@ const ProfileSchema = new mongoose.Schema({
   location: {
     type: String,
   },
+  status: {
+    type: String,
+    required: true,
+  },
   skills: {
     type: [String],
     required: true,
@@ -105,3 +109,5 @@ const ProfileSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+module.exports = mongoose.model("profile", ProfileSchema);
