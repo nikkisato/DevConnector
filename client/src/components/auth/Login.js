@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -15,46 +15,45 @@ const Login = ({ login, isAuthenticated }) => {
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
     login(email, password);
   };
 
-  //Redirect if logged in
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
+
   return (
     <Fragment>
-      <div class="alert alert-danger">Invalid credentials</div>
-      <h1 class="large text-primary">Sign In</h1>
-      <p class="lead">
-        <i class="fas fa-user"></i> Sign into Your Account
+      <h1 className="large text-primary">Sign In</h1>
+      <p className="lead">
+        <i className="fas fa-user" /> Sign Into Your Account
       </p>
-      <form class="form" onSubmit={e => onSubmit(e)}>
-        <div class="form-group">
+      <form className="form" onSubmit={onSubmit}>
+        <div className="form-group">
           <input
             type="email"
             placeholder="Email Address"
             name="email"
-            required
             value={email}
-            onChange={e => onChange(e)}
+            onChange={onChange}
+            required
           />
         </div>
-        <div class="form-group">
+        <div className="form-group">
           <input
             type="password"
             placeholder="Password"
             name="password"
             value={password}
-            required
-            onChange={e => onChange(e)}
+            onChange={onChange}
+            minLength="6"
           />
         </div>
-        <input type="submit" class="btn btn-primary" value="Login" />
+        <input type="submit" className="btn btn-primary" value="Login" />
       </form>
-      <p class="my-1">
+      <p className="my-1">
         Don't have an account? <Link to="/register">Sign Up</Link>
       </p>
     </Fragment>
@@ -65,10 +64,9 @@ Login.propTypes = {
   login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
 };
+
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
-
-//const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, { login })(Login);

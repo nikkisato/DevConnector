@@ -4,15 +4,18 @@ const { check, validationResult } = require("express-validator");
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const config = require("../../config/default.json");
+//const config = require("config");
 const User = require("../../models/User");
+const normalize = require("normalize-url");
+require("dotenv").config({ path: "../.env" });
+
 //@route   POST api/users
 //@desc    Register User
 //@access  Public
 router.post(
   "/",
   [
-    check("name", "name is required").not().isEmpty(),
+    check("name", "name is required").notEmpty(),
     check("email", "Please include a valid email").isEmail(),
     check(
       "password",
@@ -34,13 +37,21 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: "User already exists" }] });
       }
+      const avatar = normalize(
+        gravatar.url(email, {
+          s: "200",
+          r: "pg",
+          d: "mm",
+        }),
+        { forceHttps: true }
+      );
 
-      const avatar = gravatar.url(email, {
-        //Status, rated, default
-        s: "200",
-        r: "pg",
-        d: "mm",
-      });
+      //const avatar = gravatar.url(email, {
+      //  //Status, rated, default
+      //  s: "200",
+      //  r: "pg",
+      //  d: "mm",
+      //});
 
       user = new User({
         name,
@@ -63,7 +74,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        process.env.JWT_SECRET,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
