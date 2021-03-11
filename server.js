@@ -4,6 +4,7 @@ const path = require("path");
 const app = express();
 require("dotenv").config({ path: "./.env" });
 const mongoose = require("mongoose");
+
 //Connect Database
 //connectDb();
 mongoose.connect(process.env.MONGODB_URI, {
